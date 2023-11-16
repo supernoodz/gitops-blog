@@ -4,7 +4,7 @@ metadata:
   name: ztp-spoke-01
   namespace: ztp-spoke-01
 spec:
-  baseDomain: ocp-poc-demo.run
+  baseDomain: acm-ssa.com
   clusterName: ztp-spoke-01
   controlPlaneConfig:
     servingCertificates: {}
