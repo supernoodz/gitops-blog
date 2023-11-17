@@ -10,7 +10,7 @@ spec:
     dns-resolver:
       config:
         search:
-          - ocp4.local
+          - 192.168.50.140.nip.io
         server:
           - 192.168.50.1
     interfaces:

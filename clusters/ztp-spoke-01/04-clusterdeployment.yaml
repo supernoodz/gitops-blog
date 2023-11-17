@@ -4,7 +4,7 @@ metadata:
   name: ztp-spoke-01
   namespace: ztp-spoke-01
 spec:
-  baseDomain: ocp4.local
+  baseDomain: 192.168.50.140.nip.io
   clusterName: ocp
   controlPlaneConfig:
     servingCertificates: {}

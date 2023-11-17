@@ -1,0 +1,1 @@
+oc create secret docker-registry pull-secret --from-file=.dockerconfigjson=/root/pullsecret.json -n ztp-spoke-01
