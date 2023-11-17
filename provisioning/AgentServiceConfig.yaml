@@ -1,0 +1,25 @@
+apiVersion: agent-install.openshift.io/v1beta1
+kind: AgentServiceConfig
+metadata:
+  name: agent
+spec:
+  databaseStorage:
+    accessModes:
+    - ReadWriteOnce
+    storageClassName: managed-nfs-storage
+    resources:
+      requests:
+        storage: 20Gi
+  filesystemStorage:
+    accessModes:
+    - ReadWriteOnce
+    storageClassName: managed-nfs-storage
+    resources:
+      requests:
+        storage: 100Gi
+  osImages:
+  - cpuArchitecture: x86_64
+    openshiftVersion: '4.14'
+    version: '4.14.0'
+    rootFSUrl: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.14/4.14.0/rhcos-4.14.0-x86_64-live-rootfs.x86_64.img
+    url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.14/4.14.0/rhcos-4.14.0-x86_64-live.x86_64.iso

@@ -13,17 +13,16 @@ spec:
   clusterDeploymentRef:
     name: ztp-spoke-01
   imageSetRef:
-    name: img4.14.1-x86-64-appsub
-#  manifestsConfigMapRef:
-#    name: ztp-spoke-01
+    name: openshift-4.14.0
   networking:
     clusterNetwork:
       - cidr: 10.128.0.0/14
         hostPrefix: 23
     machineNetwork:
-      - cidr: 192.168.100.0/24
+      - cidr: 192.168.50.0/24
     serviceNetwork:
       - 172.30.0.0/16
   provisionRequirements:
+    workerAgents: 0
     controlPlaneAgents: 1
-  sshPublicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCglkbsUTUr3aKzfOwqw+wTX78eisTJ0QJ7mYpanrSajFr+1PZIi/VHbIWSuzDzJ2S6FV6rOlnWry+70kGeimoW4bT/IsCxu/dL522qzxWUSuGKOLzG5sehTeQ99uKFAJWRGn5B/enmiEWl1hsSArnGPh1b4Ujn6S+EivNTxlb2uG8D2c00ycUNZPpexKd2S10ft76uVjAFv08/QAmzPzGHxu0b9MiSLlKQpNV85Lb7b4mM91ZsiJrIhQ9Rys8FmS5HI3ofzvfVNlwx2Pkpf/ou6gf5vSsKa8ZOw7THteBbMFGS7Bmdigsu6+D1U7ijSj74GddlD0b0c8swt8dBu3/yuLWvnzzlC8No7A3UxAPd6pwsUBxGZVQLcbHXUSwE7BY5ebBLV5Br2huwgG5Q4bBNDSp3FdJclepFy8j1AXNYmw7QtsQNQYgfFXPWmW36AI29suzLOqQu+dPzeM6A8Tpd7rAdRvyeACZleWGqLIU7xLoxlxw66d/zkNkOMYl4vas=
+  sshPublicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/qqEy/Ev6XZhdJ9R0yqGAoYhekXBWhkVMBhhbCq66r+Nl8vpgjlpASrHGNMpwtUHRZpo6yfJaM7qMLskndbMW1Yq77Le3Bm2M7M1VEmw7if1kpiyXCLPAcjRxgtph74v8TQUdg5o57MaUIxbRzSHOpd7TkvpwlK62WOQG0aE1wIgkAOaZdLnPpJluSTOVQvbOEqyF3ukUM5erbNrit1xRfRCvpWTMvWkTjtKwr5PjBuuG3ZtpmF9i7bV7sky0863AyaXwHbqKNanfZB6B/2FNRQvL4qF18J0wlroUpzPYVXpxjaEt79OuoNZZ8+mCXI4TlCga8oRQQihJ0klTkFwt ansible-generated on ralvares

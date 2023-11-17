@@ -4,15 +4,14 @@ metadata:
   name: ztp-spoke-01
   namespace: ztp-spoke-01
 spec:
-  baseDomain: acm-ssa.com
-  clusterName: ztp-spoke-01
+  baseDomain: ocp4.local
+  clusterName: ocp
   controlPlaneConfig:
     servingCertificates: {}
   installed: false
   clusterInstallRef:
     group: extensions.hive.openshift.io
     kind: AgentClusterInstall
-    # aci == AgentClusterInstall
     name: ztp-spoke-01
     version: v1beta1
   platform:

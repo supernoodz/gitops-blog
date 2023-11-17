@@ -9,26 +9,28 @@ spec:
   config:
     dns-resolver:
       config:
+        search:
+          - ocp4.local
         server:
           - 192.168.50.1
     interfaces:
       - ipv4:
           address:
-            - ip: 192.168.50.100
+            - ip: 192.168.50.140
               prefix-length: 24
           dhcp: false
           enabled: true
         ipv6:
           enabled: false
-        name: ens3
+        name: enp1s0
         state: up
         type: ethernet
     routes:
       config:
         - destination: 0.0.0.0/0
-          next-hop-address: 192.168.50.2
-          next-hop-interface: ens3
+          next-hop-address: 192.168.150.1
+          next-hop-interface: enp1s0
           table-id: 254
   interfaces:
-    - macAddress: 52:54:00:AA:BB:CE
-      name: ens3
+    - macAddress: '54:52:00:01:05:40'
+      name: enp1s0
