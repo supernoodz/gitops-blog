@@ -3,21 +3,24 @@ kind: ClusterDeployment
 metadata:
   name: ztp-spoke-01
   namespace: ztp-spoke-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: default
+    hive.openshift.io/cluster-platform: agent-baremetal
 spec:
-  baseDomain: 192.168.50.140.nip.io
-  clusterName: ocp
-  controlPlaneConfig:
-    servingCertificates: {}
-  installed: false
+  baseDomain: superdemo.live
   clusterInstallRef:
     group: extensions.hive.openshift.io
     kind: AgentClusterInstall
     name: ztp-spoke-01
     version: v1beta1
+  clusterName: ztp-spoke-01
+  controlPlaneConfig:
+    servingCertificates: {}
+  installed: false
   platform:
     agentBareMetal:
       agentSelector:
         matchLabels:
-          cluster-name: "ztp-spoke-01"
+          cluster-name: ztp-spoke-01
   pullSecretRef:
     name: pull-secret

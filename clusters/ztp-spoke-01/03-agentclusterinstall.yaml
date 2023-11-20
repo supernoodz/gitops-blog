@@ -1,17 +1,14 @@
 apiVersion: extensions.hive.openshift.io/v1beta1
 kind: AgentClusterInstall
 metadata:
-  annotations:
-    agent-install.openshift.io/install-config-overrides: '{"networking":{"networkType":"OVNKubernetes"}}'
-    argocd.argoproj.io/sync-wave: '1'
-    ran.openshift.io/ztp-gitops-generated: '{}'
-  labels:
-    app.kubernetes.io/instance: clusters
   name: ztp-spoke-01
   namespace: ztp-spoke-01
+  labels:
+    app.kubernetes.io/instance: clusters
 spec:
   clusterDeploymentRef:
     name: ztp-spoke-01
+  #holdInstallation: true
   imageSetRef:
     name: openshift-4.14.0
   networking:
@@ -22,7 +19,8 @@ spec:
       - cidr: 192.168.50.0/24
     serviceNetwork:
       - 172.30.0.0/16
+    userManagedNetworking: true
   provisionRequirements:
-    workerAgents: 0
     controlPlaneAgents: 1
-  sshPublicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCglkbsUTUr3aKzfOwqw+wTX78eisTJ0QJ7mYpanrSajFr+1PZIi/VHbIWSuzDzJ2S6FV6rOlnWry+70kGeimoW4bT/IsCxu/dL522qzxWUSuGKOLzG5sehTeQ99uKFAJWRGn5B/enmiEWl1hsSArnGPh1b4Ujn6S+EivNTxlb2uG8D2c00ycUNZPpexKd2S10ft76uVjAFv08/QAmzPzGHxu0b9MiSLlKQpNV85Lb7b4mM91ZsiJrIhQ9Rys8FmS5HI3ofzvfVNlwx2Pkpf/ou6gf5vSsKa8ZOw7THteBbMFGS7Bmdigsu6+D1U7ijSj74GddlD0b0c8swt8dBu3/yuLWvnzzlC8No7A3UxAPd6pwsUBxGZVQLcbHXUSwE7BY5ebBLV5Br2huwgG5Q4bBNDSp3FdJclepFy8j1AXNYmw7QtsQNQYgfFXPWmW36AI29suzLOqQu+dPzeM6A8Tpd7rAdRvyeACZleWGqLIU7xLoxlxw66d/zkNkOMYl4vas=
+  sshPublicKey: >-
+    <SSH KEY>

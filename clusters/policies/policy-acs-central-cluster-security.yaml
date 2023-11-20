@@ -1,0 +1,95 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policy.open-cluster-management.io/categories: SI System and Information Integrity
+    policy.open-cluster-management.io/controls: SI-5 Security Alerts Advisories and
+      Directives
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+  labels:
+    open-cluster-management.io/policy-set: rhacs
+  name: policy-advanced-central-cluster-security
+  namespace: default
+spec:
+  disabled: false
+  policy-templates:
+  - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: policy-advanced-central-cluster-security
+      spec:
+        object-templates:
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: platform.stackrox.io/v1alpha1
+            kind: SecuredCluster
+            metadata:
+              name: stackrox-secured-cluster-services
+              namespace: stackrox
+            spec:
+              admissionControl:
+                bypass: BreakGlassAnnotation
+                contactImageScanners: DoNotScanInline
+                listenOnCreates: true
+                listenOnEvents: true
+                listenOnUpdates: true
+                timeoutSeconds: 20
+              auditLogs:
+                collection: Auto
+              centralEndpoint: |
+                {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+              clusterName: |
+                {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
+              perNode:
+                collector:
+                  collection: CORE_BPF
+                  imageFlavor: Regular
+                taintToleration: TolerateTaints
+              scanner:
+                analyzer:
+                  scaling:
+                    autoScaling: Disabled
+                    maxReplicas: 5
+                    minReplicas: 2
+                    replicas: 1
+                scannerComponent: AutoSense
+        remediationAction: enforce
+        severity: medium
+  - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: policy-advanced-central-cluster-security-link
+      spec:
+        object-templates:
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: console.openshift.io/v1
+            kind: ConsoleLink
+            metadata:
+              name: acs
+            spec:
+              applicationMenu:
+                imageURL: https://upload.wikimedia.org/wikipedia/commons/3/3a/OpenShift-LogoType.svg
+                section: Red Hat applications
+              href: https://{{ (lookup "route.openshift.io/v1" "Route" "stackrox"
+                "central").spec.host }}
+              location: ApplicationMenu
+              text: Red Hat Advanced Cluster Security for Kubernetes
+        remediationAction: enforce
+        severity: medium
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: policy-advanced-central-cluster-security-placement-binding
+  namespace: default
+placementRef:
+  name: policy-acs-operator-central-placement
+  apiGroup: cluster.open-cluster-management.io
+  kind: Placement
+subjects:
+  - name: policy-advanced-central-cluster-security
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy

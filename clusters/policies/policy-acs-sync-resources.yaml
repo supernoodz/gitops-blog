@@ -1,0 +1,105 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policy.open-cluster-management.io/categories: SI System and Information Integrity
+    policy.open-cluster-management.io/controls: SI-5 Security Alerts Advisories and
+      Directives
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+  labels:
+    open-cluster-management.io/policy-set: openshift-plus
+  name: policy-acs-sync-resources
+  namespace: default
+spec:
+  disabled: false
+  policy-templates:
+  - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: policy-acs-sync-resources2
+      spec:
+        object-templates:
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: v1
+            data:
+              admission-control-cert.pem: '{{ fromSecret "stackrox" "admission-control-tls"
+                "admission-control-cert.pem" }}'
+              admission-control-key.pem: '{{ fromSecret "stackrox" "admission-control-tls"
+                "admission-control-key.pem" }}'
+              ca.pem: '{{ fromSecret "stackrox" "admission-control-tls" "ca.pem" }}'
+            kind: Secret
+            metadata:
+              labels:
+                certificate_key_name: admission-control-cert.pem
+              name: admission-control-tls
+              namespace: default
+            type: Opaque
+        remediationAction: enforce
+        severity: medium
+  - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: policy-acs-sync-resources3
+      spec:
+        object-templates:
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: v1
+            data:
+              ca.pem: '{{ fromSecret "stackrox" "collector-tls" "ca.pem" }}'
+              collector-cert.pem: '{{ fromSecret "stackrox" "collector-tls" "collector-cert.pem"
+                }}'
+              collector-key.pem: '{{ fromSecret "stackrox" "collector-tls" "collector-key.pem"
+                }}'
+            kind: Secret
+            metadata:
+              labels:
+                certificate_key_name: collector-cert.pem
+              name: collector-tls
+              namespace: default
+            type: Opaque
+        remediationAction: enforce
+        severity: medium
+  - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: policy-acs-sync-resources4
+      spec:
+        object-templates:
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: v1
+            data:
+              acs-host: '{{ fromSecret "stackrox" "sensor-tls" "acs-host" }}'
+              ca.pem: '{{ fromSecret "stackrox" "sensor-tls" "ca.pem" }}'
+              sensor-cert.pem: '{{ fromSecret "stackrox" "sensor-tls" "sensor-cert.pem"
+                }}'
+              sensor-key.pem: '{{ fromSecret "stackrox" "sensor-tls" "sensor-key.pem"
+                }}'
+            kind: Secret
+            metadata:
+              labels:
+                certificate_key_name: sensor-cert.pem
+              name: sensor-tls
+              namespace: default
+            type: Opaque
+        remediationAction: enforce
+        severity: medium
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: policy-acs-sync-resources-placement-binding
+  namespace: default
+placementRef:
+  name: policy-acs-operator-central-placement
+  apiGroup: cluster.open-cluster-management.io
+  kind: Placement
+subjects:
+  - name: policy-acs-sync-resources
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
